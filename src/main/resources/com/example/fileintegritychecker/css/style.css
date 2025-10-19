@@ -25,8 +25,7 @@
 .hashedValue{
     -fx-font-size: 18px;
     -fx-font-family: "Helvetica";
-    -fx-alignment: center;
-    -fx-wrap-text="true"
+    -fx-wrap-text: "true";
 
 }
 

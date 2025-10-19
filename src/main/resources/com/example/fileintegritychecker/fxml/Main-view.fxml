@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+
+<BorderPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:id="mainBorderPane"
+            fx:controller="com.example.fileintegritychecker.controller.MainController"
+            stylesheets="/com/example/fileintegritychecker/css/style.css">
+    <left>
+        <VBox fx:id="sidebarNav">
+            <padding>
+                <Insets top="10" right="10" bottom="10" left="10"/>
+            </padding>
+            <Label text="Algorithm Hub"/>
+            <Separator/>
+            <padding>
+                <Insets top="10" right="10" bottom="10" left="10"/>
+            </padding>
+            <Button fx:id="BtnNavIntegrityChecker" text="Integrity Checker"/>
+
+            <Button fx:id="BtnNavHashPlayground" text="HashPlayground"/>
+            <Button fx:id="BtnNavEncryptionTool" text="Encryption Tool"/>
+
+            <Region VBox.vgrow="ALWAYS"/>
+            <Button fx:id="themeToggleBtn"
+                    onAction="#toggleTheme">
+            </Button>
+        </VBox>
+    </left>
+
+    <center>
+        <StackPane fx:id="mainContent"/>
+
+    </center>
+
+</BorderPane>

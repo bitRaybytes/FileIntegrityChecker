@@ -16,18 +16,22 @@ public class IntegrityService {
         MessageDigest digest = MessageDigest.getInstance(algorithm);
 
         try (FileInputStream fis = new FileInputStream(file)) {
-            byte[] buffer = new byte[8192];
+            byte[] buffer = new byte[1024];
             int read;
             while ((read = fis.read(buffer)) != -1) {
                 digest.update(buffer, 0, read);
             }
-        }
+            // Bytes in Hex-String umwandeln
+            byte[] hashedBytes = digest.digest();
+            StringBuilder sb = new StringBuilder();
+            for (byte b : hashedBytes) {
+                sb.append(String.format("%02x", b));
+            }
+            return sb.toString();
 
-        // Bytes in Hex-String umwandeln
-        StringBuilder sb = new StringBuilder();
-        for (byte b : digest.digest()) {
-            sb.append(String.format("%02x", b));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "Error computing hash";
         }
-        return sb.toString();
     }
 }

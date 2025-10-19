@@ -3,10 +3,7 @@ package com.example.fileintegritychecker;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.paint.Color;
 import javafx.stage.Stage;
-
-import java.io.File;
 
 /**
  * Author:
@@ -20,7 +17,7 @@ public class MainApp extends Application {
     @Override
     public void start(Stage stage) throws Exception {
         // Load FXML file
-        var url = getClass().getResource("/com/example/fileintegritychecker/fxml/main-view.fxml");
+        var url = getClass().getResource("/com/example/fileintegritychecker/fxml/Main-view.fxml");
 
         // Throw Exception, if file not found
         if (url == null){
@@ -33,11 +30,11 @@ public class MainApp extends Application {
         // Set Scene
         Scene scene = new Scene(loader.load(), WIDTH, HEIGHT);
         // Add CSS
-        scene.getStylesheets().add(getClass().getResource("/com/example/fileintegritychecker/css/style.css").toExternalForm());
+//        scene.getStylesheets().add(getClass().getResource("/com/example/fileintegritychecker/css/style.css").toExternalForm());
 
 
         // Set Stage
-        stage.setTitle("File Integrity Checker");
+        stage.setTitle("AlgoSuite");
         // Set Scene
         stage.setScene(scene);
         // Show Stage

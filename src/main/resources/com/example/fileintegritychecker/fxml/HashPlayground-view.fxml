@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.layout.GridPane?>
+
+<GridPane fx:id="hashGridPane"
+          xmlns="http://javafx.com/javafx"
+          xmlns:fx="http://javafx.com/fxml"
+          fx:controller="com.example.fileintegritychecker.controller.HashPlaygroundController"
+          stylesheets="/com/example/fileintegritychecker/css/HashPlaygroundStyles.css">
+
+    <Label fx:id="hashHeader"/>
+    <Label fx:id="hashSubheader"/>
+    <TextArea fx:id="inputTextArea" wrapText="true"/>
+    <Label fx:id="hashResult"/>
+    <Button fx:id="BtnGenerateHash"/>
+
+</GridPane>

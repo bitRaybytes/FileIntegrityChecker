@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+
+<VBox fx:id="ficVBox"
+      xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="com.example.fileintegritychecker.controller.FileIntegrityController"
+      stylesheets="/com/example/fileintegritychecker/css/FileIntegrityCheckerStyles.css">
+    <padding>
+        <Insets top="20" right="20" bottom="20" left="20"/>
+    </padding>
+    <Label fx:id="header"/>
+    <Label fx:id="subheader"/>
+    <Label fx:id="lblSelectedFile"/>
+    <Label fx:id="hashedValue" visible="false"/>
+    <Button fx:id="btnSelectFile" layoutY="200" layoutX="200" text="Select file" onAction="#openFileEvent"/>
+    <ComboBox fx:id="algoComboBox"  promptText="Select Algorithm"/>
+    <Button fx:id="replay"  onAction="#replayFileCheck"/>
+    <Button fx:id="hashFile" text="Check integrity"  onAction="#computedHash"/>
+</VBox>
