@@ -38,7 +38,6 @@ public class MainController {
     @FXML
     private void initialize() {
 
-
         BtnNavIntegrityChecker.setOnAction(e -> {
             loadView("FileIntegrityChecker-view.fxml");
             setActiveButton(BtnNavIntegrityChecker);

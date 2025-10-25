@@ -5,6 +5,8 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.layout.GridPane?>
 
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.ComboBox?>
 <GridPane fx:id="hashGridPane"
           xmlns="http://javafx.com/javafx"
           xmlns:fx="http://javafx.com/fxml"
@@ -14,7 +16,11 @@
     <Label fx:id="hashHeader"/>
     <Label fx:id="hashSubheader"/>
     <TextArea fx:id="inputTextArea" wrapText="true"/>
+    <CheckBox fx:id="addSaltToIt"/>
     <Label fx:id="hashResult"/>
     <Button fx:id="BtnGenerateHash"/>
+    <Button fx:id="copyHashValue"/>
+
+    <ComboBox fx:id="hashAlgoComboBox" />
 
 </GridPane>

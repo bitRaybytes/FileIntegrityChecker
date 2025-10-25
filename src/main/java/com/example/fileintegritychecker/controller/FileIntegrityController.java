@@ -31,6 +31,8 @@ public class FileIntegrityController {
             .replace("]","");
 
 
+    public FileIntegrityController(){}
+
     @FXML
     private void initialize() {
         initalizeVBox();

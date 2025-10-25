@@ -6,8 +6,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.stage.Stage;
 
 /**
- * Author:
- *  Ray
+ * Author: Ray
  * */
 
 // Main Application Class
