@@ -6,53 +6,66 @@ import javax.crypto.SecretKey;
 import java.security.*;
 import java.util.Base64;
 
+
+
 /**
  * A general-purpose EncryptionService that supports multiple algorithms.
  * Supports AES, DES, Blowfish (symmetric) and RSA (asymmetric) encryption.
  */
 public class EncryptionService {
 
-    public enum Algorithm {
-        AES("AES"),
-        DES("DES"),
-        BLOWFISH("Blowfish"),
-        RSA("RSA");
+//    public enum Algorithm {
+//        AES("AES"),
+//        DES("DES"),
+//        BLOWFISH("Blowfish"),
+//        RSA("RSA");
+//
+//        private final String name;
+//
+//        Algorithm(String name) {
+//            this.name = name;
+//        }
+//
+//        public String getName() {
+//            return name;
+//        }
+//    }
 
-        private final String name;
-
-        Algorithm(String name) {
-            this.name = name;
-        }
-
-        public String getName() {
-            return name;
-        }
-    }
+    private EncryptionCategory encryptionCategory;
 
     /**
      * Encrypts a plain text after using the selected algorithm.
      */
-    public String encrypt(String plainText, Algorithm algorithm) throws Exception {
-        switch (algorithm) {
-            case AES:
-            case DES:
-            case BLOWFISH:
-                return encryptSymmetric(plainText, algorithm.getName());
-            case RSA:
-                return encryptRSA(plainText);
+    public String encrypt(String plainText, EncryptionCategory category) throws Exception {
+        switch (category) {
+
+            case EncryptionCategory.MESSAGEDIGEST:
+                return encryptSymmetric(plainText, EncryptionCategory.valueOf(String.valueOf(category).split(", ")[0]));
+            case encryptionCategory.CIPHER:
+                return encryptSymmetric(plainText, EncryptionCategory.valueOf(String.valueOf(category)));
+            case encryptionCategory.KEYFACTORY:
+                return encryptSymmetric(plainText, EncryptionCategory.valueOf(String.valueOf(category)));
+            case encryptionCategory.KEYGENERATOR:
+                return encryptSymmetric(plainText, EncryptionCategory.valueOf(String.valueOf(category)));
+            case encryptionCategory.MAC:
+                return encryptSymmetric(plainText, EncryptionCategory.valueOf(String.valueOf(category)));
+            case encryptionCategory.SECURERANDOM:
+                return encryptSymmetric(plainText, EncryptionCategory.valueOf(String.valueOf(category)));
+            case encryptionCategory.SIGNATURE:
+                return encryptSymmetric(plainText, EncryptionCategory.valueOf(String.valueOf(category)));
             default:
-                throw new IllegalArgumentException("Unsupported algorithm: " + algorithm);
+                throw new IllegalArgumentException("Unsupported algorithm: " + category);
         }
     }
 
-    private String encryptSymmetric(String plainText, String algorithm) throws Exception {
-        KeyGenerator keyGen = KeyGenerator.getInstance(algorithm);
+    public String encryptSymmetric(String plainText, EncryptionCategory algorithm) throws Exception {
+        KeyGenerator keyGen = KeyGenerator.getInstance(String.valueOf(algorithm));
 //        if (algorithm.equals("DES")) {
 //            keyGen.init(56); // DES uses a 56-bit key
 //        }
         SecretKey secretKey = keyGen.generateKey();
 
-        Cipher cipher = Cipher.getInstance(algorithm);
+        Cipher cipher = Cipher.getInstance(String.valueOf(algorithm));
         cipher.init(Cipher.ENCRYPT_MODE, secretKey);
         byte[] encryptedBytes = cipher.doFinal(plainText.getBytes());
 

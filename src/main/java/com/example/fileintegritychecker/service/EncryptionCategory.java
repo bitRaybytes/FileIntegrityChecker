@@ -2,9 +2,14 @@ package com.example.fileintegritychecker.service;
 
 public enum EncryptionCategory {
 
-    MESSAGE_DIGEST("Message Digest"),
-    SYMMETRIC("Symmetric Encryption"),
-    ASYMMETRIC("Asymmetric Encryption"),
+    MESSAGEDIGEST("MessageDigest"),
+    CIPHER("Cipher"),
+    KEYFACTORY("KeyFactory"),
+    KEYGENERATOR("KeyGenerator"),
+    MAC("Mac"),
+    SECURERANDOM("SecureRandom"),
+    SIGNATURE("Signature"),
+
     BACK("← Back");
 
     private final String displayName;

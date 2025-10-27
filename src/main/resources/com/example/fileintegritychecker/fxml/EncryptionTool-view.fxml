@@ -18,7 +18,7 @@
     <Button fx:id="BtncopyToClipboard"/>
     <Label fx:id="encryptionResult"/>
 
-    <ComboBox fx:id="comboBoxEncryption"/>
+    <ComboBox fx:id="algorithmComboBox"/>
 
 
 
