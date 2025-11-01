@@ -4,6 +4,9 @@ import com.example.fileintegritychecker.model.AlgorithmProvider;
 import com.example.fileintegritychecker.service.EncryptionCategory;
 import com.example.fileintegritychecker.service.EncryptionService;
 import com.example.fileintegritychecker.util.ToolTipHandler;
+import javafx.application.Platform;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.*;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -13,7 +16,7 @@ import javafx.scene.input.ClipboardContent;
 import javafx.scene.layout.GridPane;
 import org.kordamp.ikonli.javafx.FontIcon;
 
-import java.util.List;
+import java.util.*;
 
 
 public class EncryptionToolController {
@@ -26,12 +29,12 @@ public class EncryptionToolController {
     @FXML Button BtnEncryptText;
     @FXML Button BtncopyToClipboard;
 
-    @FXML ComboBox<Object> algorithmComboBox;
+    @FXML ComboBox<String> algorithmComboBox;
 
 
 
     private final EncryptionService encryptionService = new EncryptionService();
-    private EncryptionCategory currentCategory = null;
+    private EncryptionCategory currentCategory;
     private String selectedAlgorithm;
 
     private final String HEADER = "Encryption Service";
@@ -41,47 +44,39 @@ public class EncryptionToolController {
     private final String RESULTTEXT="Your result will displayed here.";
     private final String GENERATEBTNTOOLTIP = "Generate encryption from chosen algorithm";
 
+    // Map: CategoryName → Algorithms
+    private final Map<String, List<String>> algorithmMap = new HashMap<>();
+
+//    private final ObservableList<String> mainCategories = FXCollections.observableArrayList(EncryptionCategory.values().toString());
+//    private Map<String , List> algorithmMapBackup = new HashMap<>();
+
+//    private Map<String, List<String>> algorithmMap = Map.of(Arrays.toString(EncryptionCategory.values()), AlgorithmProvider.setEncryptionAlgoListStr(currentCategory));
+//    private List<String> enumClassCategories = Collections.singletonList(EncryptionCategory.values().toString());
+    private FXCollections collections;
+
+    public EncryptionToolController(){}
+
 
     @FXML
     public void initialize(){
-        algorithmComboBox.getItems().addAll(EncryptionCategory.values());
-        algorithmComboBox.getSelectionModel().selectFirst();
-
-        // Initial mit Kategorien befüllen
-        algorithmComboBox.getItems().addAll(EncryptionCategory.values());
-
-        // Event Handler für Auswahl
-        algorithmComboBox.setOnAction(event -> handleComboBoxSelection());
-
         initEncryptGridPane();
+        // Initial population of ComboBox
+        algorithmComboBox.getItems().addAll(Arrays.toString(EncryptionCategory.values()));
+        populateMainCategories();
 
-        BtnEncryptText.setOnAction(e -> handleEncrypt());
-
-        algorithmComboBox.setOnAction(e -> onComboBoxSelection());
         BtnEncryptText.setOnAction(e -> handleEncrypt());
         BtncopyToClipboard.setOnAction(e -> copyToClipboard(encryptionResult));
 
-//        BtncopyToClipboard.setOnAction(e -> {;
-//            String resultText = encryptionResult.getText();
-//            Clipboard clipboard = Clipboard.getSystemClipboard();
-//            ClipboardContent content = new ClipboardContent();
-//            content.putString(resultText);
-//            clipboard.setContent(content);
-//        });
+        algorithmComboBox.setOnAction(event -> handleComboBoxSelection());
 
+        // Event Handler for ComboBox selection
+//        algorithmComboBox.setOnAction(event -> handleComboBoxSelection());
+//
+//        initEncryptGridPane();
+//        BtnEncryptText.setOnAction(e -> handleEncrypt());
+//        BtncopyToClipboard.setOnAction(e -> copyToClipboard(encryptionResult));
     }
 
-//    private void handleEncrypt() {
-//        try {
-//            String input = encryptText.getText();
-//            EncryptionService.Algorithm algo = comboBoxEncryption.getValue();
-//            String encrypted = encryptionService.encrypt(input, algo);
-//            encryptionResult.setText(encrypted);
-//        } catch (Exception ex) {
-//            encryptionResult.setText("Error: " + ex.getMessage());
-//            ex.printStackTrace();
-//        }
-//    }
 
 
     // --- Initialize GridPane and UI Elements --- //
@@ -95,6 +90,7 @@ public class EncryptionToolController {
         subheader.setText(SUBHEADER);
 
         encryptText.setText(ENCRYPTIONTEXT);
+        encryptText.setMaxHeight(100);
 
         BtnEncryptText.setText(BTNENCRYPTTEXT);
         ToolTipHandler.attachToolTips(BtnEncryptText, GENERATEBTNTOOLTIP, 500);
@@ -111,10 +107,10 @@ public class EncryptionToolController {
         GridPane.setRowIndex(header,0);
         GridPane.setRowIndex(subheader, 1);
         GridPane.setRowIndex(encryptText, 2);
-        GridPane.setRowIndex(algorithmComboBox, 3);
-        GridPane.setRowIndex(BtnEncryptText, 4);
-        GridPane.setRowIndex(BtncopyToClipboard, 4);
-        GridPane.setRowIndex(encryptionResult, 5);
+        GridPane.setRowIndex(encryptionResult, 3);
+        GridPane.setRowIndex(algorithmComboBox, 4);
+        GridPane.setRowIndex(BtnEncryptText, 5);
+        GridPane.setRowIndex(BtncopyToClipboard, 6);
 
         // GridPane Column Index
         GridPane.setColumnIndex(header,0);
@@ -129,97 +125,95 @@ public class EncryptionToolController {
     // --- Handle ComboBox selections --- //
     private void showMainCategories() {
         currentCategory = null;
+
         algorithmComboBox.getItems().clear();
-        algorithmComboBox.getItems().addAll(EncryptionCategory.values());
+//        algorithmComboBox.setItems(mainCategories);
+//        algorithmComboBox.getItems().setAll(mainCategories);
+        algorithmComboBox.setPromptText("Select Category");
+
     }
 
-    private void onComboBoxSelection() {
-        String selected = String.valueOf(algorithmComboBox.getValue());
-        if (selected == null) return;
 
-        // If user chooses BACK, show main categories again
-        if (selected.equals(EncryptionCategory.BACK.toString())) {
-            showMainCategories();
-            return;
-        }
 
-        // If currently viewing algorithms and the user selects one
-        if (currentCategory != null && !selected.equals(EncryptionCategory.BACK)) {
-            selectedAlgorithm = selected;
-            subheader.setText("Selected algorithm: " + selectedAlgorithm);
-            return;
-        }
-
-        // Otherwise, user selected a new main category
-        for (EncryptionCategory cat : EncryptionCategory.values()) {
-            if (cat.toString().equals(selected)) {
-                currentCategory = cat;
-                break;
-            }
-        }
-
-        if (currentCategory != null) {
-            List<String> algorithms = AlgorithmProvider.setEncryptionAlgoListStr(currentCategory);
-            algorithmComboBox.getItems().clear();
-            algorithmComboBox.getItems().add(EncryptionCategory.BACK);
-            algorithmComboBox.getItems().addAll(AlgorithmProvider.setEncryptionAlgorithmsAsString(currentCategory));
-            subheader.setText("Select an algorithm from " + currentCategory.toString());
-        }
-    }
-
-    /** --- Step 3: Encrypt using EncryptionService --- */
+    /** --- Encrypt using EncryptionService --- */
     private void handleEncrypt() {
-        if (currentCategory == null || selectedAlgorithm == null) {
-            encryptionResult.setText("Please select an algorithm first.");
+
+        if (selectedAlgorithm == null || selectedAlgorithm.equals("← Back")) {
+            encryptionResult.setText("Please select a valid algorithm first.");
+            return;
+        }
+
+        String input = encryptText.getText().trim();
+        if (input.isEmpty()) {
+            encryptionResult.setText("Please enter text to encrypt.");
             return;
         }
 
         try {
-            String input = encryptText.getText();
-            String result;
-
-            // For now, we’ll only use CIPHER algorithms with the EncryptionService.
-            // You could later expand this logic for MAC, Signature, etc.
-            if (currentCategory == EncryptionCategory.CIPHER) {
-                result = encryptionService.encryptSymmetric(input, EncryptionCategory.valueOf(selectedAlgorithm));
-            } else {
-                result = "Category not yet supported for encryption.";
-            }
-
+            String result = encryptionService.computeMessageDigest(input, selectedAlgorithm);
             encryptionResult.setText(result);
-
         } catch (Exception ex) {
             encryptionResult.setText("Error: " + ex.getMessage());
             ex.printStackTrace();
         }
     }
 
-    private void handleComboBoxSelection() {
-        Object selected = algorithmComboBox.getSelectionModel().getSelectedItem();
+    private void populateMainCategories() {
+        algorithmComboBox.getItems().clear();
 
-        if (selected instanceof EncryptionCategory) {
-            EncryptionCategory category = (EncryptionCategory) selected;
-            currentCategory = category;
-
-            // ComboBox mit Algorithmen der gewählten Kategorie neu befüllen
-            algorithmComboBox.getItems().clear();
-            algorithmComboBox.getItems().addAll(AlgorithmProvider.setEncryptionAlgorithms(category));
-            // Zurück-Option hinzufügen
-            algorithmComboBox.getItems().add(EncryptionCategory.BACK);
-
-        } else if (selected instanceof String && selected.equals(EncryptionCategory.BACK)) {
-            // Zurück zu Kategorien
-            algorithmComboBox.getItems().clear();
-            algorithmComboBox.getItems().addAll(EncryptionCategory.values());
-            currentCategory = null;
+        // Add enum display names
+        for (EncryptionCategory category : EncryptionCategory.values()) {
+            if (category != EncryptionCategory.BACK) {
+                algorithmComboBox.getItems().add(category.toString());
+                // Store algorithms for each category
+                algorithmMap.put(category.toString(), AlgorithmProvider.getAlgorithmsByCategory(category));
+            }
         }
+
+        algorithmComboBox.setPromptText("Select Category");
+    }
+
+    public void handleComboBoxSelection() {
+        String selected = algorithmComboBox.getValue();
+        if (selected == null) return;
+
+        // BACK: Go back to categories
+        if (selected.equals("← Back")) {
+            populateMainCategories();
+            return;
+        }
+
+        // If the selection is a main category (like "Cipher" or "Mac")
+        if (algorithmMap.containsKey(selected)) {
+            List<String> algorithms = algorithmMap.get(selected);
+            ObservableList<String> algoItems = FXCollections.observableArrayList();
+            algoItems.add("← Back");
+            algoItems.addAll(algorithms);
+
+            Platform.runLater(() -> {
+                algorithmComboBox.setItems(algoItems);
+                algorithmComboBox.getSelectionModel().clearSelection();
+                algorithmComboBox.setPromptText("Select Algorithm");
+            });
+
+            encryptionResult.setText("Select an algorithm from " + selected);
+        } else {
+            // User selected an actual algorithm
+            selectedAlgorithm = selected;
+            encryptionResult.setText("Selected algorithm: " + selectedAlgorithm);
+        }
+
     }
 
 
-    /** --- Step 4: Copy results --- */
+
+    /** --- Copy results --- */
     private void copyToClipboard(Label label) {
+        // Copy the result to clipboard
         ClipboardContent content = new ClipboardContent();
+        // Put the text from the label into the clipboard content
         content.putString(label.getText());
+        // Copy the content to the system clipboard
         Clipboard.getSystemClipboard().setContent(content);
     }
 
