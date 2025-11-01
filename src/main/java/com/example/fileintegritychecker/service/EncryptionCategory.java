@@ -18,6 +18,7 @@ public enum EncryptionCategory {
         this.displayName = displayName;
     }
 
+
     @Override
     public String toString() {
         return displayName;
