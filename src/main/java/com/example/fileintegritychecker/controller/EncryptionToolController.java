@@ -3,6 +3,7 @@ package com.example.fileintegritychecker.controller;
 import com.example.fileintegritychecker.model.AlgorithmProvider;
 import com.example.fileintegritychecker.service.EncryptionCategory;
 import com.example.fileintegritychecker.service.EncryptionService;
+import com.example.fileintegritychecker.util.CopyToClipboard;
 import com.example.fileintegritychecker.util.ToolTipHandler;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
@@ -11,8 +12,6 @@ import javafx.fxml.*;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
-import javafx.scene.input.Clipboard;
-import javafx.scene.input.ClipboardContent;
 import javafx.scene.layout.GridPane;
 import org.kordamp.ikonli.javafx.FontIcon;
 
@@ -47,13 +46,6 @@ public class EncryptionToolController {
     // Map: CategoryName → Algorithms
     private final Map<String, List<String>> algorithmMap = new HashMap<>();
 
-//    private final ObservableList<String> mainCategories = FXCollections.observableArrayList(EncryptionCategory.values().toString());
-//    private Map<String , List> algorithmMapBackup = new HashMap<>();
-
-//    private Map<String, List<String>> algorithmMap = Map.of(Arrays.toString(EncryptionCategory.values()), AlgorithmProvider.setEncryptionAlgoListStr(currentCategory));
-//    private List<String> enumClassCategories = Collections.singletonList(EncryptionCategory.values().toString());
-    private FXCollections collections;
-
     public EncryptionToolController(){}
 
 
@@ -65,16 +57,10 @@ public class EncryptionToolController {
         populateMainCategories();
 
         BtnEncryptText.setOnAction(e -> handleEncrypt());
-        BtncopyToClipboard.setOnAction(e -> copyToClipboard(encryptionResult));
+        BtncopyToClipboard.setOnAction(e -> new CopyToClipboard().copyToClipboard(encryptionResult));
 
         algorithmComboBox.setOnAction(event -> handleComboBoxSelection());
 
-        // Event Handler for ComboBox selection
-//        algorithmComboBox.setOnAction(event -> handleComboBoxSelection());
-//
-//        initEncryptGridPane();
-//        BtnEncryptText.setOnAction(e -> handleEncrypt());
-//        BtncopyToClipboard.setOnAction(e -> copyToClipboard(encryptionResult));
     }
 
 
@@ -122,17 +108,6 @@ public class EncryptionToolController {
         GridPane.setColumnIndex(algorithmComboBox,0);
     }
 
-    // --- Handle ComboBox selections --- //
-    private void showMainCategories() {
-        currentCategory = null;
-
-        algorithmComboBox.getItems().clear();
-//        algorithmComboBox.setItems(mainCategories);
-//        algorithmComboBox.getItems().setAll(mainCategories);
-        algorithmComboBox.setPromptText("Select Category");
-
-    }
-
 
 
     /** --- Encrypt using EncryptionService --- */
@@ -166,7 +141,7 @@ public class EncryptionToolController {
             if (category != EncryptionCategory.BACK) {
                 algorithmComboBox.getItems().add(category.toString());
                 // Store algorithms for each category
-                algorithmMap.put(category.toString(), AlgorithmProvider.getAlgorithmsByCategory(category));
+                algorithmMap.put(category.toString(), AlgorithmProvider.getEncryptionAlgorithmsByCategory(category));
             }
         }
 
@@ -204,17 +179,4 @@ public class EncryptionToolController {
         }
 
     }
-
-
-
-    /** --- Copy results --- */
-    private void copyToClipboard(Label label) {
-        // Copy the result to clipboard
-        ClipboardContent content = new ClipboardContent();
-        // Put the text from the label into the clipboard content
-        content.putString(label.getText());
-        // Copy the content to the system clipboard
-        Clipboard.getSystemClipboard().setContent(content);
-    }
-
 }
