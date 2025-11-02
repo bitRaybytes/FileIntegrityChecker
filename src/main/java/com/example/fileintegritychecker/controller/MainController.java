@@ -28,6 +28,7 @@ public class MainController {
     @FXML Button BtnNavIntegrityChecker;
     @FXML Button BtnNavHashPlayground;
     @FXML Button BtnNavEncryptionTool;
+    @FXML Button BtnNavDecryptionTool;
     @FXML BorderPane mainBorderPane;
 
     private boolean darkMode = false;
@@ -51,6 +52,10 @@ public class MainController {
         BtnNavEncryptionTool.setOnAction(e -> {
                     loadView("EncryptionTool-view.fxml");
                     setActiveButton(BtnNavEncryptionTool);
+        });
+        BtnNavDecryptionTool.setOnAction(e->{
+            loadView("DecryptionTool-view.fxml");
+            setActiveButton(BtnNavDecryptionTool);
         });
         // Default view at startup
         loadView("FileIntegrityChecker-view.fxml");
