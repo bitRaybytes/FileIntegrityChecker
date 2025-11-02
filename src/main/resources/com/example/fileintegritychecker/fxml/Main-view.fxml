@@ -24,6 +24,7 @@
 
             <Button fx:id="BtnNavHashPlayground" text="HashPlayground"/>
             <Button fx:id="BtnNavEncryptionTool" text="Encryption Tool"/>
+            <Button fx:id="BtnNavDecryptionTool" text="Decryption Tool"/>
 
             <Region VBox.vgrow="ALWAYS"/>
             <Button fx:id="themeToggleBtn"
