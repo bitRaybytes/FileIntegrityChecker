@@ -1,72 +1,66 @@
 package com.example.fileintegritychecker.util;
 
 import com.example.fileintegritychecker.model.AlgorithmProvider;
-import com.example.fileintegritychecker.service.EncryptionCategory;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 
-import java.util.Enumeration;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
-public class ComboBoxSelectionHandler {
-    private ComboBox<String> comboBox;
-    private Label encryptionResult;
-    private Map<String, List<String>> algorithmMap;
-    private String selectedAlgorithm;
-    private Class<T> enumType;
-    private List<String> algorithms;
+public class ComboBoxSelectionHandler<T extends Enum<T>>  {
 
-    public ComboBoxSelectionHandler(ComboBox<String> comboBox){
+    private final ComboBox<String> comboBox;
+    private final Label infoLabel;
+    private final Class<T> enumType;
+    private Map<T, List<String>> algorithmMap;
+    private static final String BACK = "← Back";
+
+
+    public ComboBoxSelectionHandler(ComboBox<String> comboBox, Label infoLabel, Class<T> enumType)
+    {
         this.comboBox = comboBox;
+        this.infoLabel = infoLabel;
+        this.enumType = enumType;
+        this.algorithmMap = AlgorithmProvider.getAlgorithmsForEnum(enumType);
     }
 
-    public static <T extends Enum<T>> void populateComboBox(ComboBox<String> comboBox, Class<T> enumType, Map<String, List<String>> algorithmMap){
-        comboBox.getItems().clear();
-
-        // Add enum display names
-        for (T constant: enumType.getEnumConstants()) {
-            if (constant.equals("← Back")) {
-                comboBox.getItems().add(constant.toString());
-                // Store algorithms for each category
-                algorithmMap.put(constant.toString(), AlgorithmProvider.getAlgorithmsByCategory(constant.getClass()));
-            }
-        }
-
+    /** Zeigt alle Enum-Kategorien in der ComboBox */
+    public void showMainCategories() {
+        comboBox.getItems().setAll(String.valueOf(algorithmMap.keySet()).split(", "));
         comboBox.setPromptText("Select Category");
+        infoLabel.setText("Select a category to view algorithms");
     }
 
-    public void handleComboBoxSelection(ComboBox<String> comboBox, Class<T> enumType, Map<String, List<String>> algorithmMap) {
+
+    public void handleSelection() {
         String selected = comboBox.getValue();
         if (selected == null) return;
 
-        // BACK: Go back to categories
-        if (selected.equals("← Back")) {
-            populateComboBox(comboBox, enumType, algorithmMap);
+        // Back zur Hauptansicht
+        if (selected.equals(BACK)) {
+            showMainCategories();
             return;
         }
 
-        // If the selection is a main category (like "Cipher" or "Mac")
+        // Wenn es eine Kategorie ist
         if (algorithmMap.containsKey(selected)) {
-            algorithms = algorithmMap.get(selected);
-            ObservableList<String> algoItems = FXCollections.observableArrayList();
-            algoItems.add("← Back");
-            algoItems.addAll(algorithms);
+            List<String> algorithms = algorithmMap.get(selected);
+            List<String> displayList = new ArrayList<>();
+            displayList.add(BACK);
+            displayList.addAll(algorithms);
 
             Platform.runLater(() -> {
-                comboBox.setItems(algoItems);
+                comboBox.setItems(FXCollections.observableArrayList(displayList));
                 comboBox.getSelectionModel().clearSelection();
                 comboBox.setPromptText("Select Algorithm");
             });
 
-            encryptionResult.setText("Select an algorithm from " + selected);
+            infoLabel.setText("Algorithms in " + selected + ":");
         } else {
-            // User selected an actual algorithm
-            selectedAlgorithm = selected;
-            encryptionResult.setText("Selected algorithm: " + selectedAlgorithm);
+            // Es ist ein Algorithmus
+            infoLabel.setText("Selected Algorithm: " + selected);
         }
     }
 }

@@ -7,7 +7,8 @@ module com.example.fileintegritychecker {
     requires javafx.graphics;
     requires jdk.jdi;
     requires javafx.base;
-    requires com.example.fileintegritychecker;
+    requires java.management;
+
 
     opens com.example.fileintegritychecker to javafx.fxml;
     opens com.example.fileintegritychecker.controller to javafx.fxml;

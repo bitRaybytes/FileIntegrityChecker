@@ -8,9 +8,8 @@ public enum EncryptionCategory {
     KEYGENERATOR("KeyGenerator"),
     MAC("Mac"),
     SECURERANDOM("SecureRandom"),
-    SIGNATURE("Signature"),
+    SIGNATURE("Signature");
 
-    BACK("← Back");
 
     private final String displayName;
 

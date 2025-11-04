@@ -2,7 +2,8 @@ package com.example.fileintegritychecker.controller;
 
 import com.example.fileintegritychecker.model.AlgorithmProvider;
 import com.example.fileintegritychecker.service.DecryptionCategory;
-import com.sun.jdi.StringReference;
+import com.example.fileintegritychecker.service.EncryptionCategory;
+import com.example.fileintegritychecker.util.ComboBoxSelectionHandler;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -10,9 +11,7 @@ import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import org.kordamp.ikonli.javafx.FontIcon;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 
 public class DecryptionToolController {
@@ -27,11 +26,13 @@ public class DecryptionToolController {
     @FXML private Label headerLabel;
     @FXML private Label subheaderLabel;
     @FXML private Label decryptResultLabel;
-    @FXML private ComboBox<String> decryptAlgoBox;
+    @FXML private ComboBox<DecryptionCategory> decryptAlgoBox;
     @FXML private TextArea inputDecryptTextArea;
     @FXML private Button BtnDecryptText;
     @FXML private Button BtnCopyDecryptedText;
     @FXML private GridPane decryptToolPane;
+
+
 
     private final String[] LABELS =
             {
@@ -43,13 +44,22 @@ public class DecryptionToolController {
                     "Decrypt"
             };
 
-    private final Map<String, List<String>> decryptionAlgorithmsMap = new HashMap<>();
+
+    private ComboBoxSelectionHandler<DecryptionCategory> comboHandler;
 
 
     @FXML
     private void initialize(){
+        decryptAlgoBox.getItems().setAll();
+        decryptAlgoBox.getItems().toString().split(", ");
+
         // Initialization logic for Decryption Tool UI components
         initDecryptPane();
+        comboHandler = new ComboBoxSelectionHandler(decryptAlgoBox, decryptResultLabel, DecryptionCategory.class);
+        comboHandler.showMainCategories();
+
+        decryptAlgoBox.setOnAction(e -> comboHandler.handleSelection());
+        BtnDecryptText.setOnAction(e -> comboHandler.handleSelection());
 
     }
 
@@ -92,45 +102,5 @@ public class DecryptionToolController {
         GridPane.setColumnIndex(BtnCopyDecryptedText,1);
 
     }
-
-
-    private void handleDecryption(){
-        // Logic to handle decryption based on selected algorithm
-        String selectedDecryptAlgo = decryptAlgoBox.getValue();
-
-        if (selectedDecryptAlgo == null || selectedDecryptAlgo.isEmpty()){
-            // No algorithm selected
-            decryptResultLabel.setText("[INFO] Please select a decryption algorithm.");
-            return;
-        }
-
-        String decryptInput = inputDecryptTextArea.getText().trim();
-        if (decryptInput.isEmpty()){
-            decryptResultLabel.setText("Please enter text to decrypt.");
-            return;
-        }
-
-        try {
-            // Decryption logic based on selected algorithm
-
-        } catch (Exception e){
-            decryptResultLabel.setText("Decryption failed: " + e.getMessage());
-            e.printStackTrace();
-        }
-
-    }
-
-    private void populateDecryptionAlgorithms(){
-        decryptAlgoBox.setPromptText("Select Decryption Category");
-        decryptAlgoBox.getItems().clear();
-
-        for (DecryptionCategory dc : DecryptionCategory.values()){
-            if (dc != DecryptionCategory.BACK){
-                decryptAlgoBox.getItems().add(dc.toString());
-                decryptionAlgorithmsMap.put(dc.toString(), AlgorithmProvider.getDecryptionAlgorithmsByCategoriy(dc));
-            }
-        }
-    }
-
 
 }

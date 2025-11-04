@@ -1,7 +1,5 @@
 package com.example.fileintegritychecker.service;
 
-import com.example.fileintegritychecker.controller.EncryptionToolController;
-
 import javax.crypto.*;
 import java.security.*;
 import java.util.Base64;
@@ -154,7 +152,4 @@ public class EncryptionService {
         return Base64.getEncoder().encodeToString(encryptedBytes);
     }
 
-    static void main(String[] args) throws Exception {
-        System.out.println(new EncryptionService().encryptRSA("Hello, World!", new EncryptionService().computeMessageDigest("Hello, World!", EncryptionCategory.MESSAGEDIGEST.toString())));
-    }
 }

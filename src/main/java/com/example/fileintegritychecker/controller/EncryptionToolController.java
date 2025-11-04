@@ -1,8 +1,10 @@
 package com.example.fileintegritychecker.controller;
 
 import com.example.fileintegritychecker.model.AlgorithmProvider;
+import com.example.fileintegritychecker.service.DecryptionCategory;
 import com.example.fileintegritychecker.service.EncryptionCategory;
 import com.example.fileintegritychecker.service.EncryptionService;
+import com.example.fileintegritychecker.util.ComboBoxSelectionHandler;
 import com.example.fileintegritychecker.util.CopyToClipboard;
 import com.example.fileintegritychecker.util.ToolTipHandler;
 import javafx.application.Platform;
@@ -44,7 +46,8 @@ public class EncryptionToolController {
     private final String GENERATEBTNTOOLTIP = "Generate encryption from chosen algorithm";
 
     // Map: CategoryName → Algorithms
-    private final Map<String, List<String>> algorithmMap = new HashMap<>();
+    private ComboBoxSelectionHandler<EncryptionCategory> comboHandler;
+
 
     public EncryptionToolController(){}
 
@@ -53,16 +56,12 @@ public class EncryptionToolController {
     public void initialize(){
         initEncryptGridPane();
         // Initial population of ComboBox
-        algorithmComboBox.getItems().addAll(Arrays.toString(EncryptionCategory.values()));
-        populateMainCategories();
+        comboHandler = new ComboBoxSelectionHandler(algorithmComboBox, encryptionResult, EncryptionCategory.class);
+        comboHandler.showMainCategories();
 
-        BtnEncryptText.setOnAction(e -> handleEncrypt());
-        BtncopyToClipboard.setOnAction(e -> new CopyToClipboard().copyToClipboard(encryptionResult));
-
-        algorithmComboBox.setOnAction(event -> handleComboBoxSelection());
-
+        algorithmComboBox.setOnAction(e -> comboHandler.handleSelection());
+        BtnEncryptText.setOnAction(e -> comboHandler.handleSelection());
     }
-
 
 
     // --- Initialize GridPane and UI Elements --- //
@@ -108,75 +107,4 @@ public class EncryptionToolController {
         GridPane.setColumnIndex(algorithmComboBox,0);
     }
 
-
-
-    /** --- Encrypt using EncryptionService --- */
-    private void handleEncrypt() {
-
-        if (selectedAlgorithm == null || selectedAlgorithm.equals("← Back")) {
-            encryptionResult.setText("Please select a valid algorithm first.");
-            return;
-        }
-
-        String input = encryptText.getText().trim();
-        if (input.isEmpty()) {
-            encryptionResult.setText("Please enter text to encrypt.");
-            return;
-        }
-
-        try {
-            String result = encryptionService.computeMessageDigest(input, selectedAlgorithm);
-            encryptionResult.setText(result);
-        } catch (Exception ex) {
-            encryptionResult.setText("Error: " + ex.getMessage());
-            ex.printStackTrace();
-        }
-    }
-
-    private void populateMainCategories() {
-        algorithmComboBox.getItems().clear();
-
-        // Add enum display names
-        for (EncryptionCategory category : EncryptionCategory.values()) {
-            if (category != EncryptionCategory.BACK) {
-                algorithmComboBox.getItems().add(category.toString());
-                // Store algorithms for each category
-                algorithmMap.put(category.toString(), AlgorithmProvider.getEncryptionAlgorithmsByCategory(category));
-            }
-        }
-
-        algorithmComboBox.setPromptText("Select Category");
-    }
-
-    public void handleComboBoxSelection() {
-        String selected = algorithmComboBox.getValue();
-        if (selected == null) return;
-
-        // BACK: Go back to categories
-        if (selected.equals("← Back")) {
-            populateMainCategories();
-            return;
-        }
-
-        // If the selection is a main category (like "Cipher" or "Mac")
-        if (algorithmMap.containsKey(selected)) {
-            List<String> algorithms = algorithmMap.get(selected);
-            ObservableList<String> algoItems = FXCollections.observableArrayList();
-            algoItems.add("← Back");
-            algoItems.addAll(algorithms);
-
-            Platform.runLater(() -> {
-                algorithmComboBox.setItems(algoItems);
-                algorithmComboBox.getSelectionModel().clearSelection();
-                algorithmComboBox.setPromptText("Select Algorithm");
-            });
-
-            encryptionResult.setText("Select an algorithm from " + selected);
-        } else {
-            // User selected an actual algorithm
-            selectedAlgorithm = selected;
-            encryptionResult.setText("Selected algorithm: " + selectedAlgorithm);
-        }
-
-    }
 }

@@ -5,8 +5,8 @@ public enum DecryptionCategory {
 //    DECRYPTION("Decryption"),
     CIPHER("Cipher"),
     SIGNATURE("Signature"),
-    KEYFACTORY("KeyFactory"),
-    BACK("← Back");
+    KEYFACTORY("KeyFactory");
+
 
     private final String displayName;
 
