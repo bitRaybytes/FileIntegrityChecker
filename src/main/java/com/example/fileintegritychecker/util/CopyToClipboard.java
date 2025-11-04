@@ -8,7 +8,12 @@ public class CopyToClipboard {
 
     public CopyToClipboard(){}
 
-    /** --- Copy results --- */
+    /*
+    * @param The label for element
+    * @return copies content to clipboard
+    */
+    
+    /** --- Copy results from a Label --- */
     public void copyToClipboard(Label label) {
         // Copy the result to clipboard
         ClipboardContent content = new ClipboardContent();
