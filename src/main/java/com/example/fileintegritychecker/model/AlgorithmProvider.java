@@ -4,7 +4,9 @@ package com.example.fileintegritychecker.model;
 import java.security.Security;
 import java.util.*;
 
-public class AlgorithmProvider{
+public class AlgorithmProvider
+{
+
 
     /**
      * @param category from enum Type classes
@@ -29,10 +31,17 @@ public class AlgorithmProvider{
         Map<T, List<String>> result = new HashMap<>();
 
         for (T constant : enumType.getEnumConstants()) {
-            result.put(constant, getAlgorithmsByCategory(constant));
+            List<String> algos = getAlgorithmsByCategory(constant);
+            result.put(constant, algos);
+            System.out.println("Loaded algorithms for " + constant + ": " + algos);
         }
-
         return result;
+    }
+
+    public static String getAlgorithmAsString(){
+        String string = "";
+
+        return string;
     }
 
 

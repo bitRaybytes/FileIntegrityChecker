@@ -14,4 +14,11 @@ public enum DecryptionCategory {
         this.displayName = displayName;
     }
 
+    public String getDisplayName()
+    {
+        return displayName;
+    }
+
+
+
 }

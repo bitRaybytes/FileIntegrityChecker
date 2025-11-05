@@ -34,7 +34,7 @@ public class EncryptionToolController {
 
 
 
-    private final EncryptionService encryptionService = new EncryptionService();
+    private final EncryptionService encryptionService = new EncryptionService(getTextInput(encryptText), getAlgorithmString());
     private EncryptionCategory currentCategory;
     private String selectedAlgorithm;
 
@@ -49,7 +49,10 @@ public class EncryptionToolController {
     private ComboBoxSelectionHandler<EncryptionCategory> comboHandler;
 
 
-    public EncryptionToolController(){}
+    public EncryptionToolController(String algorithm)
+    {
+        this.selectedAlgorithm = algorithm;
+    }
 
 
     @FXML
@@ -60,7 +63,23 @@ public class EncryptionToolController {
         comboHandler.showMainCategories();
 
         algorithmComboBox.setOnAction(e -> comboHandler.handleSelection());
-        BtnEncryptText.setOnAction(e -> comboHandler.handleSelection());
+        BtnEncryptText.setOnAction(e -> {
+            try {
+                encryptionService.encrypt();
+            } catch (Exception ex) {
+                throw new RuntimeException(ex);
+            }
+        });
+    }
+
+    private String getAlgorithmString()
+    {
+        return selectedAlgorithm;
+    }
+
+    private String getTextInput(TextArea encryptText){
+        String encryptedTxtInput = encryptText.getText();
+        return encryptedTxtInput;
     }
 
 

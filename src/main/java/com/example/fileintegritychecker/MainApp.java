@@ -52,5 +52,4 @@ public class MainApp extends Application {
     private final int WIDTH = 800;
     private final int HEIGHT = 400;
 
-
 }

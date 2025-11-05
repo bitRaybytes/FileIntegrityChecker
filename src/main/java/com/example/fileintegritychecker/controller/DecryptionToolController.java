@@ -2,7 +2,7 @@ package com.example.fileintegritychecker.controller;
 
 import com.example.fileintegritychecker.model.AlgorithmProvider;
 import com.example.fileintegritychecker.service.DecryptionCategory;
-import com.example.fileintegritychecker.service.EncryptionCategory;
+import com.example.fileintegritychecker.service.DecryptionService;
 import com.example.fileintegritychecker.util.ComboBoxSelectionHandler;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
@@ -13,26 +13,24 @@ import org.kordamp.ikonli.javafx.FontIcon;
 
 import java.util.*;
 
-
-public class DecryptionToolController {
-    // Controller logic for Decryption Tool goes here
-
-    /*
+    /**
     * Textarea, Buttons, Dropdown for selecting decryption algorithms
     * Event handlers for decrypting files based on selected algorithm
     * Integration with EncryptionService for decryption operations
     * */
 
+    // Controller logic for Decryption Tool goes here
+public class DecryptionToolController {
+
+
     @FXML private Label headerLabel;
     @FXML private Label subheaderLabel;
     @FXML private Label decryptResultLabel;
-    @FXML private ComboBox<DecryptionCategory> decryptAlgoBox;
+    @FXML private ComboBox<String> decryptAlgoBox;
     @FXML private TextArea inputDecryptTextArea;
     @FXML private Button BtnDecryptText;
     @FXML private Button BtnCopyDecryptedText;
     @FXML private GridPane decryptToolPane;
-
-
 
     private final String[] LABELS =
             {
@@ -44,22 +42,22 @@ public class DecryptionToolController {
                     "Decrypt"
             };
 
-
     private ComboBoxSelectionHandler<DecryptionCategory> comboHandler;
-
+    private final AlgorithmProvider algorithmProvider = new AlgorithmProvider();
+    private DecryptionService decryptionService;
 
     @FXML
     private void initialize(){
-        decryptAlgoBox.getItems().setAll();
-        decryptAlgoBox.getItems().toString().split(", ");
-
         // Initialization logic for Decryption Tool UI components
         initDecryptPane();
-        comboHandler = new ComboBoxSelectionHandler(decryptAlgoBox, decryptResultLabel, DecryptionCategory.class);
+
+        comboHandler = new ComboBoxSelectionHandler<>(decryptAlgoBox, decryptResultLabel, DecryptionCategory.class);
+        decryptionService = new DecryptionService(inputDecryptTextArea, comboHandler.getSelectedAlgorithm());
         comboHandler.showMainCategories();
+        decryptAlgoBox.getItems();
 
         decryptAlgoBox.setOnAction(e -> comboHandler.handleSelection());
-        BtnDecryptText.setOnAction(e -> comboHandler.handleSelection());
+        BtnDecryptText.setOnAction(e -> decryptionService.decryptPatterns());
 
     }
 

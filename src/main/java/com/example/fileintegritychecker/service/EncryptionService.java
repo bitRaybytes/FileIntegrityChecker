@@ -12,35 +12,49 @@ import java.util.Base64;
 public class EncryptionService {
 
 
+    private String inputText;
+    private String algorithm;
+
     private EncryptionCategory encryptionCategory;
+
+    public EncryptionService(String inputText, String algorithm)
+    {
+        this.inputText = inputText;
+        this.algorithm = algorithm;
+    }
 
     /**
      * Encrypts a plain text after using the selected algorithm.
      */
-    public String encrypt(String plainText, String algorithm) throws Exception {
+    public String encrypt() throws Exception {
         // Prüfe zuerst, zu welcher Kategorie der Algorithmus gehört
         EncryptionCategory category = determineCategory(algorithm);
 
 
         switch (category) {
             case MESSAGEDIGEST:
-                System.out.println(computeMessageDigest(plainText, algorithm));
-                return computeMessageDigest(plainText, algorithm);
+                System.out.println(computeMessageDigest(inputText, algorithm));
+                return computeMessageDigest(inputText, algorithm);
             case CIPHER:
-                return encryptWithCipher(plainText, algorithm);
+                return encryptWithCipher(inputText, algorithm);
             case KEYGENERATOR:
-                return encryptSymmetric(plainText, algorithm);
+                return encryptSymmetric(inputText, algorithm);
             case MAC:
-                return computeMAC(plainText, algorithm);
+                return computeMAC(inputText, algorithm);
             case SECURERANDOM:
-                return generateSecureRandom(plainText);
+                return generateSecureRandom(inputText);
             case SIGNATURE:
-                return signData(plainText, algorithm);
+                return signData(inputText, algorithm);
             default:
                 throw new IllegalArgumentException("Nicht unterstützter Algorithmus: " + algorithm);
         }
     }
     private EncryptionCategory determineCategory(String algorithm) {
+        if (encryptionCategory.toString().equals("MessageDigest")){
+
+//            return encrypt()
+        }
+
         if (algorithm.contains("MD") || algorithm.contains("SHA")) {
             return EncryptionCategory.MESSAGEDIGEST;
         } else if (algorithm.contains("AES") || algorithm.contains("DES")) {
@@ -49,6 +63,8 @@ public class EncryptionService {
 
         throw new IllegalArgumentException("Kategorie nicht gefunden für: " + algorithm);
     }
+
+
     public String computeMessageDigest(String input, String algorithm) throws Exception {
         MessageDigest digest = MessageDigest.getInstance(algorithm);
         byte[] hash = digest.digest(input.getBytes());
