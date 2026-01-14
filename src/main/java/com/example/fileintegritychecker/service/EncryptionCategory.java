@@ -18,10 +18,9 @@ public enum EncryptionCategory {
     }
 
 
-    @Override
-    public String toString() {
-        return displayName;
-    }
+    public String getDisplayName(){return displayName;}
+
+
 }
 
 

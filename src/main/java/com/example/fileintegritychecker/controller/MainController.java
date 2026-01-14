@@ -2,7 +2,7 @@ package com.example.fileintegritychecker.controller;
 
 
 import javafx.fxml.*;
-import javafx.scene.Parent;
+import javafx.scene.*;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.BorderPane;
@@ -35,7 +35,6 @@ public class MainController {
     // Initialize ComboBox and other UI elements
     @FXML
     private void initialize() {
-
         BtnNavIntegrityChecker.setOnAction(e -> {
             loadView("FileIntegrityChecker-view.fxml");
             setActiveButton(BtnNavIntegrityChecker);
@@ -47,8 +46,8 @@ public class MainController {
             scene.getStylesheets().add(getClass().getResource("/com/example/fileintegritychecker/css/HashPlaygroundStyles.css").toExternalForm());
         });
         BtnNavEncryptionTool.setOnAction(e -> {
-                    loadView("EncryptionTool-view.fxml");
-                    setActiveButton(BtnNavEncryptionTool);
+            loadView("EncryptionTool-view.fxml");
+            setActiveButton(BtnNavEncryptionTool);
         });
         BtnNavDecryptionTool.setOnAction(e->{
             loadView("DecryptionTool-view.fxml");

@@ -49,14 +49,17 @@ public class HashPlaygroundController {
 
         });
 
+        /* Label prefix for @hashResult */
+        String HashIntroText = "Hash result: ";
         // Button action to generate hash
         BtnGenerateHash.setOnAction(e -> {
             String selectedAlgorithm = (String) hashAlgoComboBox.getValue();
             String input = inputTextArea.getText();
             boolean useSalt = addSaltToIt.isSelected();
 
+
             String result = HashingService.hashText(input, selectedAlgorithm, useSalt);
-            hashResult.setText(result);
+            hashResult.setText(HashIntroText + result);
 
             if (input == null || input.isBlank()) {
                 hashResult.setText(EMPTYTEXTERR);
@@ -67,7 +70,7 @@ public class HashPlaygroundController {
             if (!hashResult.getText().equals(HASHRESULT)){
                 Clipboard clipboard = Clipboard.getSystemClipboard();
                 ClipboardContent content = new ClipboardContent();
-                content.putString(hashResult.getText());
+                content.putString(hashResult.getText().replace(HashIntroText, ""));
                 clipboard.setContent(content);
             }
 

@@ -1,15 +1,9 @@
 package com.example.fileintegritychecker.controller;
 
-import com.example.fileintegritychecker.model.AlgorithmProvider;
-import com.example.fileintegritychecker.service.DecryptionCategory;
 import com.example.fileintegritychecker.service.EncryptionCategory;
 import com.example.fileintegritychecker.service.EncryptionService;
 import com.example.fileintegritychecker.util.ComboBoxSelectionHandler;
-import com.example.fileintegritychecker.util.CopyToClipboard;
 import com.example.fileintegritychecker.util.ToolTipHandler;
-import javafx.application.Platform;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.fxml.*;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -26,41 +20,41 @@ public class EncryptionToolController {
     @FXML Label header;
     @FXML Label subheader;
     @FXML Label encryptionResult;
-    @FXML TextArea encryptText;
+    @FXML TextArea encryptText = new TextArea();
     @FXML Button BtnEncryptText;
     @FXML Button BtncopyToClipboard;
 
     @FXML ComboBox<String> algorithmComboBox;
 
 
-
-    private final EncryptionService encryptionService = new EncryptionService(getTextInput(encryptText), getAlgorithmString());
+    private EncryptionService encrSer = new EncryptionService();
+    private EncryptionService encryptionService = new EncryptionService(getTextInput(), getAlgorithmString());
     private EncryptionCategory currentCategory;
     private String selectedAlgorithm;
 
     private final String HEADER = "Encryption Service";
     private final String SUBHEADER="Choose from an encryption algorithm.";
-    private final String ENCRYPTIONTEXT= "Enter your text here...";
+    private final String ENCRYPTIONTEXT= "Enter your text here to encrypt...";
     private final String BTNENCRYPTTEXT="Encrypt";
     private final String RESULTTEXT="Your result will displayed here.";
     private final String GENERATEBTNTOOLTIP = "Generate encryption from chosen algorithm";
 
-    // Map: CategoryName → Algorithms
     private ComboBoxSelectionHandler<EncryptionCategory> comboHandler;
 
 
-    public EncryptionToolController(String algorithm)
-    {
-        this.selectedAlgorithm = algorithm;
-    }
+    public EncryptionToolController() {}
 
 
     @FXML
     public void initialize(){
+
         initEncryptGridPane();
         // Initial population of ComboBox
-        comboHandler = new ComboBoxSelectionHandler(algorithmComboBox, encryptionResult, EncryptionCategory.class);
+        comboHandler = new ComboBoxSelectionHandler<>(algorithmComboBox, encryptionResult, EncryptionCategory.class);
         comboHandler.showMainCategories();
+
+        algorithmComboBox.getItems();
+
 
         algorithmComboBox.setOnAction(e -> comboHandler.handleSelection());
         BtnEncryptText.setOnAction(e -> {
@@ -70,6 +64,9 @@ public class EncryptionToolController {
                 throw new RuntimeException(ex);
             }
         });
+        if (algorithmComboBox.getItems().isEmpty()) {
+            throw new IllegalArgumentException("ComboBox should not be empty during initialization.");
+        }
     }
 
     private String getAlgorithmString()
@@ -77,9 +74,8 @@ public class EncryptionToolController {
         return selectedAlgorithm;
     }
 
-    private String getTextInput(TextArea encryptText){
-        String encryptedTxtInput = encryptText.getText();
-        return encryptedTxtInput;
+    private String getTextInput(){
+        return encryptText.getText();
     }
 
 

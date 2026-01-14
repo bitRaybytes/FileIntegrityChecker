@@ -1,21 +1,22 @@
 package com.example.fileintegritychecker.model;
 
 
+import com.example.fileintegritychecker.service.DecryptionCategory;
+import com.example.fileintegritychecker.service.EncryptionCategory;
+
 import java.security.Security;
 import java.util.*;
 
 public class AlgorithmProvider
 {
-
-
-    /**
-     * @param category from enum Type classes
-     * @return Populating category as Enums in ArrayList
-     * */
+    private static final EncryptionCategory category = null;
 
     /**
      * Return algorithm by category with constant param
      */
+
+    public AlgorithmProvider(){}
+
     public static <T extends Enum<T>> List<String> getAlgorithmsByCategory(T category){
         if (category == null) return List.of();
 
@@ -36,6 +37,32 @@ public class AlgorithmProvider
             System.out.println("Loaded algorithms for " + constant + ": " + algos);
         }
         return result;
+    }
+
+    public static List<String> getAlgorithmsForEnumAsList() {
+        List<String> enumsList = new ArrayList<>();
+        for (Object constant : EncryptionCategory.values()) {
+//            List<String> algos = getAlgorithmsByCategory((EncryptionCategory) constant);
+            enumsList.add(constant.toString());
+        }
+        System.out.println("Loaded EncryptionCategory: " + enumsList);
+        return enumsList;
+    }
+
+    static void main() {
+        getAlgorithmsByCategory();
+        getAlgorithmsForEnumAsList();
+    }
+
+    public static List<String> getAlgorithmsByCategory(){
+//        if (category == null) return List.of();
+
+        List<String> algorithmList = new ArrayList<>();
+        for (Object categoryName : EncryptionCategory.values()){
+            algorithmList.add(categoryName.toString());
+        }
+        System.out.println("Loaded Algorithm: " + algorithmList);
+        return algorithmList;
     }
 
     public static String getAlgorithmAsString(){

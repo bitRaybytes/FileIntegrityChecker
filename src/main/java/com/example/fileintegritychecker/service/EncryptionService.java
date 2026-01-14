@@ -17,12 +17,29 @@ public class EncryptionService {
 
     private EncryptionCategory encryptionCategory;
 
+    public EncryptionService(){}
+
     public EncryptionService(String inputText, String algorithm)
     {
         this.inputText = inputText;
         this.algorithm = algorithm;
     }
 
+    public String getInputText(){
+        return inputText;
+    }
+
+    public String getAlgorithm(){
+        return algorithm;
+    }
+
+    public String setInputText(String inputText){
+        return this.inputText = inputText;
+    }
+
+    public String setAlgorithm(String Algorithm){
+        return this.algorithm = algorithm;
+    }
     /**
      * Encrypts a plain text after using the selected algorithm.
      */
@@ -31,31 +48,27 @@ public class EncryptionService {
         EncryptionCategory category = determineCategory(algorithm);
 
 
-        switch (category) {
-            case MESSAGEDIGEST:
-                System.out.println(computeMessageDigest(inputText, algorithm));
-                return computeMessageDigest(inputText, algorithm);
-            case CIPHER:
-                return encryptWithCipher(inputText, algorithm);
-            case KEYGENERATOR:
-                return encryptSymmetric(inputText, algorithm);
-            case MAC:
-                return computeMAC(inputText, algorithm);
-            case SECURERANDOM:
-                return generateSecureRandom(inputText);
-            case SIGNATURE:
-                return signData(inputText, algorithm);
-            default:
-                throw new IllegalArgumentException("Nicht unterstützter Algorithmus: " + algorithm);
-        }
+        return switch (category) {
+            case MESSAGEDIGEST ->
+//                System.out.println(computeMessageDigest(inputText, algorithm)); // for debugging purposes
+                    computeMessageDigest(inputText, algorithm);
+            case CIPHER -> encryptWithCipher(inputText, algorithm);
+            case KEYGENERATOR -> encryptSymmetric(inputText, algorithm);
+            case MAC -> computeMAC(inputText, algorithm);
+            case SECURERANDOM -> generateSecureRandom(inputText);
+            case SIGNATURE -> signData(inputText, algorithm);
+            default -> throw new IllegalArgumentException("Nicht unterstützter Algorithmus: " + algorithm);
+        };
     }
-    private EncryptionCategory determineCategory(String algorithm) {
-        if (encryptionCategory.toString().equals("MessageDigest")){
 
+    private EncryptionCategory determineCategory(String algorithm) {
+//        if (encryptionCategory.getDisplayName().equals("MessageDigest")){
+//            System.out.println("[DEBUG] Detected MessageDigest category for algorithm: " + algorithm); // for debugging purposes
 //            return encrypt()
-        }
+//        }
 
         if (algorithm.contains("MD") || algorithm.contains("SHA")) {
+            System.out.println("[DEBUG] Detected MessageDigest category for algorithm: " + algorithm); // for debugging purposes
             return EncryptionCategory.MESSAGEDIGEST;
         } else if (algorithm.contains("AES") || algorithm.contains("DES")) {
             return EncryptionCategory.CIPHER;
