@@ -1,18 +1,18 @@
-.hashHeader{
+#hashHeader{
     -fx-font-size: 28px;
     -fx-font-family: "Helvetica";
     -fx-alignment: center;
     -fx-text-fill: #2b2b2b;
 }
 
-.hashSubheader{
+#hashSubheader{
     -fx-font-size: 22px;
     -fx-font-family: "Helvetica";
     -fx-alignment: center;
     -fx-text-fill: #555;
 }
 
-.inputTextArea{
+#inputTextArea{
     -fx-font-size: 18px;
     -fx-font-family: "Helvetica";
     -fx-alignment: center;
@@ -21,20 +21,20 @@
     -fx-pref-height: 100px;
  }
 
-.hashResult{
+#hashResult{
    -fx-font-size: 18px;
    -fx-font-family: "Helvetica";
    -fx-alignment: center;
    -fx-wrap-text: true;
 }
 
-.BtnGenerateHash{
+#BtnGenerateHash{
    -fx-font-size:18px;
    -fx-font-family: "Helvetica";
    -fx-background-color: #4CAF50;
    -fx-text-fill: white;
 }
 
-.BtnGenerateHash:hover {
+#BtnGenerateHash:hover {
     -fx-background-color: #45a049;
 }

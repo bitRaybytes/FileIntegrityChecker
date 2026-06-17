@@ -1,4 +1,4 @@
-package com.example.fileintegritychecker.service;
+package com.example.fileintegritychecker.model;
 
 public enum EncryptionCategory {
 

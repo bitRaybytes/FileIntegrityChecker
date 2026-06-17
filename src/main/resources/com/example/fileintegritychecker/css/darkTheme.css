@@ -1,17 +1,17 @@
-.root {
+#root {
     -fx-background-color: #1e1e1e;
     -fx-text-fill: #f5f5f5;
 }
 
 
-.themeToggleBtn {
+#themeToggleBtn {
     -fx-background-color: #333333;
     -fx-text-fill: #ffffff;
 }
 
-.header{-fx-text-fill:#f5f5f5;}
-.subheader{-fx-text-fill:#f5f5f5;}
-.lblSelectedFile{-fx-text-fill:#f5f5f5;}
-.replay {
+#header{-fx-text-fill:#f5f5f5;}
+#subheader{-fx-text-fill:#f5f5f5;}
+#lblSelectedFile{-fx-text-fill:#f5f5f5;}
+#replay {
     -fx-background-color: #666666;
 }
