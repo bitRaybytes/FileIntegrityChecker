@@ -29,7 +29,7 @@ public class MainApp extends Application {
         // Set Scene
         Scene scene = new Scene(loader.load(), WIDTH, HEIGHT);
         // Add CSS
-//        scene.getStylesheets().add(getClass().getResource("/com/example/fileintegritychecker/css/style.css").toExternalForm());
+        scene.getStylesheets().add(getClass().getResource("/com/example/fileintegritychecker/css/style.css").toExternalForm());
 
 
         // Set Stage
