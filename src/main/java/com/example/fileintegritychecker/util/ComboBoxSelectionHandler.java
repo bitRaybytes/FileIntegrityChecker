@@ -1,9 +1,6 @@
 package com.example.fileintegritychecker.util;
 
 import com.example.fileintegritychecker.model.AlgorithmProvider;
-import com.example.fileintegritychecker.service.DecryptionCategory;
-import com.example.fileintegritychecker.service.EncryptionCategory;
-import com.example.fileintegritychecker.service.EncryptionService;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.scene.control.ComboBox;
@@ -32,9 +29,6 @@ public class ComboBoxSelectionHandler<T extends Enum<T>>  {
 
     /** Zeigt alle Enum-Kategorien in der ComboBox */
     public void showMainCategories() {
-        List<String> mainCategories = new ArrayList<>();
-
-
         List<String> categoryNames = algorithmMap.keySet()
                         .stream()
                                 .map(Enum::toString)
@@ -48,7 +42,6 @@ public class ComboBoxSelectionHandler<T extends Enum<T>>  {
         List<Object> list = new ArrayList<>();
 
         for (List<String> strings : algorithmMap.values()) {
-//            comboBox.getItems().
             list.add(strings);
 //            System.out.println(list); // for debugging purposes
 //            comboBox.getItems().setAll(String.valueOf(list));

@@ -1,6 +1,6 @@
 package com.example.fileintegritychecker.controller;
 
-import com.example.fileintegritychecker.service.EncryptionCategory;
+import com.example.fileintegritychecker.model.EncryptionCategory;
 import com.example.fileintegritychecker.service.EncryptionService;
 import com.example.fileintegritychecker.util.ComboBoxSelectionHandler;
 import com.example.fileintegritychecker.util.ToolTipHandler;
@@ -10,8 +10,6 @@ import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import org.kordamp.ikonli.javafx.FontIcon;
-
-import java.util.*;
 
 
 public class EncryptionToolController {

@@ -1,9 +1,6 @@
 package com.example.fileintegritychecker.model;
 
 
-import com.example.fileintegritychecker.service.DecryptionCategory;
-import com.example.fileintegritychecker.service.EncryptionCategory;
-
 import java.security.Security;
 import java.util.*;
 
@@ -49,11 +46,6 @@ public class AlgorithmProvider
         return enumsList;
     }
 
-    static void main() {
-        getAlgorithmsByCategory();
-        getAlgorithmsForEnumAsList();
-    }
-
     public static List<String> getAlgorithmsByCategory(){
 //        if (category == null) return List.of();
 
@@ -66,9 +58,7 @@ public class AlgorithmProvider
     }
 
     public static String getAlgorithmAsString(){
-        String string = "";
-
-        return string;
+        return "";
     }
 
 

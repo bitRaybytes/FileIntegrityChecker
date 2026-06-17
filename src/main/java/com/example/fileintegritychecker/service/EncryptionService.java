@@ -1,5 +1,7 @@
 package com.example.fileintegritychecker.service;
 
+import com.example.fileintegritychecker.model.EncryptionCategory;
+
 import javax.crypto.*;
 import java.security.*;
 import java.util.Base64;

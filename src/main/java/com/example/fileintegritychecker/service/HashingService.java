@@ -29,7 +29,7 @@ public class HashingService {
         try {
             String textToHash = input;
 
-            // Add salt if requested
+            // Add salt if requested true
             if (addSalt) {
                 textToHash += generateSalt();
             }
@@ -43,9 +43,8 @@ public class HashingService {
     }
 
     public static String generateSalt(){
-//        String saltHash = "";
 
-        byte[] salt = new byte[16]; // Do not alter or modify the value of the instance 'salt'
+        byte[] salt = new byte[16]; // Do not alter or modify the value
         new SecureRandom().nextBytes(salt);
 
         return Base64.getEncoder().encodeToString(salt);
@@ -87,7 +86,7 @@ public class HashingService {
         Set<String> algorithmSet = Security.getAlgorithms("MessageDigest");
         List<String> algorithmList  = new ArrayList<>(algorithmSet);
 
-        Collections.sort(algorithmList ); // sort alphabetically for nice display
+        Collections.sort(algorithmList );
         return FXCollections.observableArrayList(algorithmList);
     }
 }

@@ -1,6 +1,7 @@
 package com.example.fileintegritychecker.service;
 
 import com.example.fileintegritychecker.model.AlgorithmProvider;
+import com.example.fileintegritychecker.model.DecryptionCategory;
 import javafx.scene.control.TextArea;
 
 import javax.crypto.*;

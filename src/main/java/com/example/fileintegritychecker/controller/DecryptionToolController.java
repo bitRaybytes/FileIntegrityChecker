@@ -1,7 +1,7 @@
 package com.example.fileintegritychecker.controller;
 
 import com.example.fileintegritychecker.model.AlgorithmProvider;
-import com.example.fileintegritychecker.service.DecryptionCategory;
+import com.example.fileintegritychecker.model.DecryptionCategory;
 import com.example.fileintegritychecker.service.DecryptionService;
 import com.example.fileintegritychecker.util.ComboBoxSelectionHandler;
 import javafx.fxml.FXML;
@@ -11,15 +11,13 @@ import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import org.kordamp.ikonli.javafx.FontIcon;
 
-import java.util.*;
-
-    /**
+/**
     * Textarea, Buttons, Dropdown for selecting decryption algorithms
     * Event handlers for decrypting files based on selected algorithm
     * Integration with EncryptionService for decryption operations
     * */
 
-    // Controller logic for Decryption Tool goes here
+
 public class DecryptionToolController {
 
 
@@ -48,7 +46,7 @@ public class DecryptionToolController {
 
     @FXML
     private void initialize(){
-        // Initialization logic for Decryption Tool UI components
+
         initDecryptPane();
 
         comboHandler = new ComboBoxSelectionHandler<>(decryptAlgoBox, decryptResultLabel, DecryptionCategory.class);
