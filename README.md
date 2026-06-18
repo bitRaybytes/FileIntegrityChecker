@@ -93,9 +93,23 @@ Das Projekt dient somit nicht nur als Werkzeug, sondern gleichzeitig als Lern- u
 
 ## Screenshots
 
+<div style="width:600px">
+
 ![Dateiintegritätsprüfung - Hauptansicht der Anwendung](/Docs/pictures/FileIntegrityChecker_checksum.png)
+
+</div>
+
+<div style="width:600px">
+
 ![Dateiintegritätsprüfung - Ansicht nach Verarbeitung](/Docs/pictures/FileIntegrityChecker_checkFile.png)
+
+</div>
+
+<div style="width:600px">
+
 ![HashPlayground - Verschlüsselung von Klartext](/Docs/pictures/FileIntegrityChecker_hashplayground.png)
+
+</div>
 
 ## Installation
 
