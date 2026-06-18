@@ -5,7 +5,7 @@ target/
 .kotlin
 mvnw
 mvnw.cmd
-.mvn
+/.mvn/
 
 ### IntelliJ IDEA ###
 .idea/modules.xml
@@ -101,3 +101,4 @@ dist/
 
 # Environment variables
 .env
+
