@@ -3,6 +3,9 @@ target/
 !**/src/main/**/target/
 !**/src/test/**/target/
 .kotlin
+mvnw
+mvnw.cmd
+.mvn
 
 ### IntelliJ IDEA ###
 .idea/modules.xml
@@ -38,8 +41,10 @@ build/
 ### Mac OS ###
 .DS_Store
 
+### JAVA RELATED ###
 # Compiled class files
 *.class
+src/main/java/module-info.java
 
 # Log files
 *.log
