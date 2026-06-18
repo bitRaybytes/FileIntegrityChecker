@@ -64,7 +64,6 @@ public class MainController {
 
     // Load different views based on navigation
     private void loadView(String fxmlfile) {
-        // Logic to load the specified FXML view
         try{
             String FXMLPath = "/com/example/fileintegritychecker/fxml/";
             Parent view = FXMLLoader.load(getClass().getResource(FXMLPath + fxmlfile));
@@ -78,11 +77,11 @@ public class MainController {
     @FXML
     private void toggleTheme() {
         Scene scene = themeToggleBtn.getScene();
-        // Null check
+
         if (scene == null) return;
 
         scene.getStylesheets().clear();
-        // Toggle between dark and light mode
+
         if (darkMode) {
             scene.getStylesheets().add(getClass().getResource("/com/example/fileintegritychecker/css/lightTheme.css").toExternalForm());
             themeToggleBtn.setGraphic(new FontIcon("mdi2m-moon-waxing-crescent")); // Mond
@@ -90,7 +89,7 @@ public class MainController {
             scene.getStylesheets().add(getClass().getResource("/com/example/fileintegritychecker/css/darkTheme.css").toExternalForm());
             themeToggleBtn.setGraphic(new FontIcon("mdi2w-white-balance-sunny")); // Sonne
         }
-        // Toggle the mode
+
         darkMode = !darkMode;
     }
 }
